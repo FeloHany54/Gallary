@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_task_1/first_screen.dart';
 import 'package:flutter_task_1/home/home_widget/favourite.dart';
@@ -7,7 +9,8 @@ import 'package:flutter_task_1/profile/profile_page/profile_page.dart';
 class MyHomePage extends StatelessWidget {
   final String? title;
   final String? body;
-  const MyHomePage({this.title, this.body, super.key});
+  final List<File>? image;
+  const MyHomePage({this.image, this.title, this.body, super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -33,7 +36,14 @@ class MyHomePage extends StatelessWidget {
         // make scroll to page to be flixable
         child: Column(
           children: [
-            Image.asset("Assets/Tree.png"),
+            image == null || image!.isEmpty
+                ? Image.asset("Assets/Tree.png")
+                : Image.file(
+                  image![0],
+                  height: 300,
+                  fit: BoxFit.cover,
+                  width: double.infinity,
+                ),
 
             Row(
               mainAxisAlignment:
@@ -54,18 +64,41 @@ class MyHomePage extends StatelessWidget {
               ),
             ),
 
-            Row(
-              mainAxisAlignment:
-                  MainAxisAlignment.spaceEvenly, // بيساوي المسافات بين ال ايتمز
-              children: [
-                MySeason(
-                  // called class (myseason)
-                  "Assets/Spring.jpeg",
-                  "Spring",
+            image == null || image!.isEmpty
+                ? Row(
+                  mainAxisAlignment:
+                      MainAxisAlignment
+                          .spaceEvenly, // بيساوي المسافات بين ال ايتمز
+                  children: [
+                    MySeason(
+                      // called class (myseason)
+                      "Assets/Spring.jpeg",
+                      "Spring",
+                    ),
+                    MySeason(
+                      "Assets/Fall.jpeg",
+                      "Fall",
+                    ), // called class (myseason)
+                  ],
+                )
+                : SizedBox(
+                  height: 500,
+                  child: GridView.builder(
+                    itemCount: image!.length,
+                    itemBuilder:
+                        (context, index) => Image.file(
+                          image![index],
+                          height: 200,
+                          width: 200,
+                          fit: BoxFit.cover,
+                        ),
+                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: 2,
+                      mainAxisSpacing: 10,
+                      crossAxisSpacing: 10,
+                    ),
+                  ),
                 ),
-                MySeason("Assets/Fall.jpeg", "Fall"), // called class (myseason)
-              ],
-            ),
           ],
         ),
       ),

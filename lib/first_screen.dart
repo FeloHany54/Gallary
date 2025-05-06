@@ -1,5 +1,8 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_task_1/home/home_screen/home_page.dart';
+import 'package:image_picker/image_picker.dart';
 
 class FirstScreen extends StatefulWidget {
   // stateful to interaction
@@ -10,6 +13,22 @@ class FirstScreen extends StatefulWidget {
 }
 
 class _FirstScreenState extends State<FirstScreen> {
+  ImagePicker imagePicker = ImagePicker();
+
+  List<File>? selectedimage = [];
+
+  Future<void> imageSelector() async {
+    List<XFile> images = await imagePicker.pickMultiImage();
+    if (images != null && mounted) {
+      setState(() {
+        selectedimage!.addAll(
+          images.map((toElement) => File(toElement!.path)).toList(),
+        );
+        // selectedimage = File(image.path);
+      });
+    }
+  }
+
   TextEditingController title =
       TextEditingController(); // variable to save input text
 
@@ -38,9 +57,75 @@ class _FirstScreenState extends State<FirstScreen> {
             image: AssetImage("Assets/back2.jpg"),
           ),
         ),
-        child: Column(
+        child: ListView(
           children: [
-            SizedBox(height: 150),
+            SizedBox(height: 30),
+
+            selectedimage!.isEmpty
+                ? Container(
+                  color: Colors.white38,
+                  height: 150,
+                  width: MediaQuery.sizeOf(context).width - 20,
+                  child: IconButton(
+                    onPressed: () {
+                      imageSelector();
+                    },
+                    icon: Icon(Icons.camera_alt),
+                  ),
+                )
+                : Row(
+                  children: [
+                    Container(
+                      color: Colors.white38,
+                      height: 100,
+                      width: 100,
+                      child: IconButton(
+                        onPressed: () {
+                          imageSelector();
+                        },
+                        icon: Icon(Icons.camera_alt),
+                      ),
+                    ),
+                    SizedBox(
+                      height: 100,
+                      width: MediaQuery.sizeOf(context).width - 20,
+                      child: ListView(
+                        scrollDirection: Axis.horizontal,
+                        children:
+                            selectedimage!
+                                .map(
+                                  (toElement) => Stack(
+                                    children: [
+                                      Padding(
+                                        padding: const EdgeInsets.symmetric(
+                                          horizontal: 8.0,
+                                        ),
+                                        child: Image.file(
+                                          toElement,
+                                          height: 100,
+                                          width: 100,
+                                          fit: BoxFit.cover,
+                                        ),
+                                      ),
+                                      IconButton(
+                                        onPressed: () {
+                                          setState(() {
+                                            selectedimage!.removeAt(
+                                              selectedimage!.indexOf(toElement),
+                                            );
+                                          });
+                                        },
+                                        icon: Icon(Icons.cancel),
+                                      ),
+                                    ],
+                                  ),
+                                )
+                                .toList(),
+                      ),
+                    ),
+                  ],
+                ),
+
             Padding(
               // يبعد عن اطراف الشاشة
               padding: const EdgeInsets.all(8.0),
@@ -80,6 +165,7 @@ class _FirstScreenState extends State<FirstScreen> {
                   (context) => MyHomePage(
                     title: title.text,
                     body: body.text,
+                    image: selectedimage,
                   ), // defined this variable to print title & body in homepage
             ),
           );
