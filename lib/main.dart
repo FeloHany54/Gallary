@@ -1,8 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_task_1/home/home_screen/home_page.dart';
+import 'package:flutter_task_1/profile/profile_widget/user_Model.dart';
+import 'package:provider/provider.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(
+    ChangeNotifierProvider(
+      create: (context) => UserModel(),
+      child: const MyApp(),
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {

@@ -1,6 +1,8 @@
 import 'dart:io';
-
+import 'package:flutter_task_1/profile/profile_widget/user_Model.dart';
+import 'package:provider/provider.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_task_1/profile/profile_widget/options.dart';
 import 'package:image_picker/image_picker.dart';
 
 class ProfilePage extends StatefulWidget {
@@ -11,19 +13,6 @@ class ProfilePage extends StatefulWidget {
 }
 
 class _ProfilePageState extends State<ProfilePage> {
-  ImagePicker imagePicker = ImagePicker();
-
-  File? selectedimage;
-
-  Future<void> imageSelector(ImageSource source) async {
-    XFile? image = await imagePicker.pickImage(source: source);
-    if (image != null && mounted) {
-      setState(() {
-        selectedimage = File(image.path);
-      });
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -32,132 +21,106 @@ class _ProfilePageState extends State<ProfilePage> {
       body: Column(
         children: [
           Center(
-            child: Stack(
-              alignment: Alignment.bottomRight,
-              children: [
-                CircleAvatar(
-                  //for profile image
-                  backgroundColor: Colors.grey.shade500,
-                  radius: 100,
+            child: Consumer<UserModel>(
+              // rebuild when any changes happend
+              builder: (context, UserModel, child) {
+                return Stack(
+                  alignment: Alignment.bottomRight,
+                  children: [
+                    CircleAvatar(
+                      //for profile image
+                      backgroundColor: Colors.grey.shade500,
+                      radius: 100,
 
-                  child:
-                      selectedimage == null
-                          ? Icon(color: Colors.white38, Icons.person, size: 200)
-                          : ClipOval(
-                            child: Image.file(
-                              height: 200,
-                              width: 200,
-                              fit: BoxFit.cover,
-                              selectedimage!,
-                            ),
-                          ),
-                ),
-                CircleAvatar(
-                  // for camera buttom
-                  backgroundColor: Colors.black,
-                  child: IconButton(
-                    onPressed: () {
-                      showModalBottomSheet(
-                        context: context,
-                        builder:
-                            (context) => SizedBox(
-                              height: 150,
-                              child: Column(
-                                children: [
-                                  Text(
-                                    "Profile",
-                                    style: TextStyle(fontSize: 25),
-                                  ),
-                                  Divider(),
-                                  Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceEvenly,
+                      child:
+                          UserModel.user?.image == null
+                              ? Icon(
+                                color: Colors.white38,
+                                Icons.person,
+                                size: 200,
+                              )
+                              : ClipOval(
+                                child: Image.file(
+                                  height: 200,
+                                  width: 200,
+                                  fit: BoxFit.cover,
+                                  UserModel.user!.image!,
+                                ),
+                              ),
+                    ),
+                    CircleAvatar(
+                      // for camera buttom
+                      backgroundColor: Colors.black,
+                      child: IconButton(
+                        onPressed: () {
+                          showModalBottomSheet(
+                            context: context,
+                            builder:
+                                (context) => SizedBox(
+                                  height: 150,
+                                  child: Column(
                                     children: [
-                                      Options(
-                                        onpressed: () {
-                                          imageSelector(ImageSource.camera);
-                                          Navigator.pop(context);
-                                        },
-                                        title: "Camera",
-                                        icon: Icons.camera_alt,
+                                      Text(
+                                        "Profile",
+                                        style: TextStyle(fontSize: 25),
                                       ),
-                                      Options(
-                                        onpressed: () {
-                                          imageSelector(ImageSource.gallery);
-                                          Navigator.pop(context);
-                                        },
-                                        title: "Gallery",
-                                        icon: Icons.image,
+                                      Divider(),
+                                      Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceEvenly,
+                                        children: [
+                                          Options(
+                                            onpressed: () {
+                                              UserModel.imageSelector(
+                                                ImageSource.camera,
+                                              );
+                                              Navigator.pop(context);
+                                            },
+                                            title: "Camera",
+                                            icon: Icons.camera_alt,
+                                          ),
+                                          Options(
+                                            onpressed: () {
+                                              UserModel.imageSelector(
+                                                ImageSource.gallery,
+                                              );
+                                              Navigator.pop(context);
+                                            },
+                                            title: "Gallery",
+                                            icon: Icons.image,
+                                          ),
+                                          if (UserModel.user?.image != null)
+                                            Options(
+                                              selectedimage:
+                                                  UserModel.user?.image,
+                                              onpressed: () {
+                                                UserModel.removeImage();
+                                                Navigator.pop(context);
+                                              },
+                                              title: "Delete",
+                                              icon: Icons.delete,
+                                            ),
+                                        ],
                                       ),
-                                      if (selectedimage != null)
-                                        Options(
-                                          selectedimage: selectedimage,
-                                          onpressed: () {
-                                            if (mounted) {
-                                              setState(() {
-                                                selectedimage = null;
-                                              });
-                                            }
-                                            Navigator.pop(context);
-                                          },
-                                          title: "Delete",
-                                          icon: Icons.delete,
-                                        ),
                                     ],
                                   ),
-                                ],
-                              ),
-                            ), // whem press apear white sheet
-                      );
-                    },
-                    icon: Icon(
-                      color: Colors.white38,
-                      Icons.camera_alt,
-                      size: 25,
+                                ), // whem press apear white sheet
+                          );
+                        },
+                        icon: Icon(
+                          color: Colors.white38,
+                          Icons.camera_alt,
+                          size: 25,
+                        ),
+                      ),
                     ),
-                  ),
-                ),
-              ],
+                  ],
+                );
+              },
             ),
           ),
         ],
       ),
-    );
-  }
-}
-
-class Options extends StatelessWidget {
-  final String title;
-  final IconData icon;
-  final File? selectedimage;
-  final VoidCallback onpressed;
-  final Colors? color;
-  const Options({
-    this.selectedimage,
-    this.color,
-    required this.onpressed,
-    required this.title,
-    required this.icon,
-    super.key,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      children: [
-        IconButton(
-          color: selectedimage == null ? Colors.grey : Colors.red,
-          onPressed: onpressed,
-          icon: Icon(icon),
-        ),
-        Text(
-          title,
-          style: TextStyle(
-            color:
-                selectedimage == null ? Colors.grey.shade500 : Colors.redAccent,
-          ),
-        ),
-      ],
     );
   }
 }

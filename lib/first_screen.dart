@@ -86,41 +86,45 @@ class _FirstScreenState extends State<FirstScreen> {
                         icon: Icon(Icons.camera_alt),
                       ),
                     ),
-                    SizedBox(
-                      height: 100,
-                      width: MediaQuery.sizeOf(context).width - 20,
-                      child: ListView(
-                        scrollDirection: Axis.horizontal,
-                        children:
-                            selectedimage!
-                                .map(
-                                  (toElement) => Stack(
-                                    children: [
-                                      Padding(
-                                        padding: const EdgeInsets.symmetric(
-                                          horizontal: 8.0,
+                    Expanded(
+                      child: SizedBox(
+                        height: 100,
+                        width: MediaQuery.sizeOf(context).width - 20,
+                        child: ListView(
+                          scrollDirection: Axis.horizontal,
+                          children:
+                              selectedimage!
+                                  .map(
+                                    (toElement) => Stack(
+                                      children: [
+                                        Padding(
+                                          padding: const EdgeInsets.symmetric(
+                                            horizontal: 8.0,
+                                          ),
+                                          child: Image.file(
+                                            toElement,
+                                            height: 100,
+                                            width: 100,
+                                            fit: BoxFit.cover,
+                                          ),
                                         ),
-                                        child: Image.file(
-                                          toElement,
-                                          height: 100,
-                                          width: 100,
-                                          fit: BoxFit.cover,
+                                        IconButton(
+                                          onPressed: () {
+                                            setState(() {
+                                              selectedimage!.removeAt(
+                                                selectedimage!.indexOf(
+                                                  toElement,
+                                                ),
+                                              );
+                                            });
+                                          },
+                                          icon: Icon(Icons.cancel),
                                         ),
-                                      ),
-                                      IconButton(
-                                        onPressed: () {
-                                          setState(() {
-                                            selectedimage!.removeAt(
-                                              selectedimage!.indexOf(toElement),
-                                            );
-                                          });
-                                        },
-                                        icon: Icon(Icons.cancel),
-                                      ),
-                                    ],
-                                  ),
-                                )
-                                .toList(),
+                                      ],
+                                    ),
+                                  )
+                                  .toList(),
+                        ),
                       ),
                     ),
                   ],
