@@ -3,6 +3,7 @@ import 'package:flutter_task_1/add_item/item.dart';
 import 'package:flutter_task_1/add_item/item_model.dart';
 import 'package:flutter_task_1/details/details_screen/details_page.dart';
 import 'package:flutter_task_1/add_item/add_item_screen.dart';
+import 'package:flutter_task_1/favorite/favorite_madel.dart';
 import 'package:flutter_task_1/profile/profile_page/profile_page.dart';
 import 'package:flutter_task_1/profile/profile_widget/user_Model.dart';
 import 'package:provider/provider.dart';
@@ -80,7 +81,15 @@ class DashboardScreen extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(items.items[index].title),
-                      IconButton(onPressed: () {}, icon: Icon(Icons.favorite)),
+                      IconButton(
+                        onPressed: () {
+                          Provider.of<FavoriteMadel>(
+                            context,
+                            listen: false,
+                          ).add(items.items[index]);
+                        },
+                        icon: Icon(Icons.favorite),
+                      ),
                     ],
                   ),
                 ],

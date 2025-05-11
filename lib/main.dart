@@ -3,6 +3,7 @@ import 'package:flutter_task_1/add_item/item_model.dart';
 import 'package:flutter_task_1/dashboard/dashboard_Screen.dart';
 import 'package:flutter_task_1/dashboard/nav_bar.dart';
 import 'package:flutter_task_1/details/details_screen/details_page.dart';
+import 'package:flutter_task_1/favorite/favorite_madel.dart';
 import 'package:flutter_task_1/profile/profile_widget/user_Model.dart';
 import 'package:provider/provider.dart';
 
@@ -12,6 +13,7 @@ void main() {
       providers: [
         ChangeNotifierProvider(create: (context) => UserModel()),
         ChangeNotifierProvider(create: (context) => ItemModel()),
+        ChangeNotifierProvider(create: (context) => FavoriteMadel()),
       ],
       child: const MyApp(),
     ),

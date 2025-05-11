@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_task_1/dashboard/dashboard_Screen.dart';
+import 'package:flutter_task_1/favorite/favorite_screen.dart';
 import 'package:flutter_task_1/profile/profile_page/profile_page.dart';
 
 class NavBar extends StatefulWidget {
@@ -14,7 +15,8 @@ class _NavBarState extends State<NavBar> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: [DashboardScreen(), ProfilePage(), ProfilePage()][_selectedIndex],
+      body:
+          [DashboardScreen(), FavoriteScreen(), ProfilePage()][_selectedIndex],
       bottomNavigationBar: NavigationBar(
         onDestinationSelected: (index) {
           setState(() {
