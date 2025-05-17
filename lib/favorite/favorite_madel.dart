@@ -6,12 +6,23 @@ class FavoriteMadel extends ChangeNotifier {
   List<Item> get fav => _fav;
 
   add(Item item) {
-    _fav.add(item);
+    if (!_fav.contains(item)) {
+      _fav.add(item);
+    }
     notifyListeners();
   }
 
-  remave(Item item) {
-    _fav.remove(item);
+  remove(Item item) {
+    if (_fav.contains(item)) {
+      _fav.remove(item);
+    }
+
+    notifyListeners();
+  }
+
+  isFavourite(Item item) {
+    item.favorite = !item.favorite;
+    item.favorite ? add(item) : remove(item);
     notifyListeners();
   }
 }
