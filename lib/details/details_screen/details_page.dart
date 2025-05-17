@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:flutter_task_1/add_item/item.dart';
 import 'package:flutter_task_1/add_item/item_model.dart';
 import 'package:flutter_task_1/profile/profile_widget/user_Model.dart';
 import 'package:provider/provider.dart';
@@ -69,7 +70,9 @@ class DetailsPage extends StatelessWidget {
                 mainAxisAlignment:
                     MainAxisAlignment.end, // to make icons appear at the end
                 children: [
-                  MyWidget(),
+                  MyWidget(
+                    index: items.items.indexOf(items.selectedimage! as Item),
+                  ),
                   IconButton(
                     onPressed: () {},
                     icon: Icon(Icons.share),

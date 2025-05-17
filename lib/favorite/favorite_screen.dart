@@ -38,7 +38,7 @@ class FavoriteScreen extends StatelessWidget {
                               Provider.of<FavoriteMadel>(
                                 context,
                                 listen: false,
-                              ).add(fav.fav[index]);
+                              ).remove(fav.fav[index]);
                             },
                             icon: Icon(Icons.favorite),
                           ),
