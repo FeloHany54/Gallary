@@ -35,12 +35,10 @@ class FavoriteScreen extends StatelessWidget {
                           Text(fav.fav[index].title),
                           IconButton(
                             onPressed: () {
-                              Provider.of<FavoriteMadel>(
-                                context,
-                                listen: false,
-                              ).remove(fav.fav[index]);
+                              fav.fav[index].favorite = false;
+                              fav.remove(fav.fav[index]);
                             },
-                            icon: Icon(Icons.favorite),
+                            icon: Icon(Icons.favorite, color: Colors.red),
                           ),
                         ],
                       ),

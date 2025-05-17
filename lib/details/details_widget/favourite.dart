@@ -11,19 +11,19 @@ class MyWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Consumer<ItemModel>(
-      builder:
-          (context, item, child) => IconButton(
-            onPressed: () {
-              Provider.of<FavoriteMadel>(
-                context,
-                listen: false,
-              ).isFavourite(item.items[index]);
-            },
-            icon: Icon(
-              Icons.favorite,
-              color: item.items[index].favorite ? Colors.red : Colors.grey,
-            ),
+      builder: (context, item, child) {
+        final fav = Provider.of<FavoriteMadel>(context, listen: true);
+        final currentItem = item.items[index];
+        return IconButton(
+          onPressed: () {
+            fav.isFavourite(currentItem);
+          },
+          icon: Icon(
+            Icons.favorite,
+            color: item.items[index].favorite ? Colors.red : Colors.grey,
           ),
+        );
+      },
     );
   }
 }

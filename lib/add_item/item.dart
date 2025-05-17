@@ -3,6 +3,14 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 
 class Item extends ChangeNotifier {
+  @override
+  bool operator ==(Object other) {
+    return other is Item && other.title == title;
+  }
+
+  @override
+  int get hashCode => title.hashCode;
+
   Item({
     required this.images,
     required this.title,
