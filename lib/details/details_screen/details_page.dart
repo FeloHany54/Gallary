@@ -1,4 +1,3 @@
-import 'dart:io';
 import 'package:flutter_task_1/add_item/item.dart';
 import 'package:flutter_task_1/add_item/item_model.dart';
 import 'package:flutter_task_1/profile/profile_widget/user_Model.dart';
@@ -6,7 +5,6 @@ import 'package:provider/provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_task_1/add_item/add_item_screen.dart';
 import 'package:flutter_task_1/details/details_widget/favourite.dart';
-import 'package:flutter_task_1/details/details_widget/season.dart';
 import 'package:flutter_task_1/profile/profile_page/profile_page.dart';
 
 class DetailsPage extends StatelessWidget {
