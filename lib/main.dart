@@ -13,7 +13,7 @@ void main() {
         ChangeNotifierProvider(create: (context) => ItemModel()),
         ChangeNotifierProvider(create: (context) => FavoriteMadel()),
       ],
-      child: const MyApp(),
+      child:  MyApp(),
     ),
   );
 }
